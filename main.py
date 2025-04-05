@@ -116,7 +116,7 @@ def get_gpt_response(game_state: str, model: str, temperature: float) -> Optiona
 def get_move_from_gpt_response(response: Optional[str]) -> Optional[str]:
     if response is None:
         return None
-
+    #print("response is", response)
     # Parse the response to get only the first move
     moves = response.split()
     first_move = moves[0] if moves else None
@@ -515,16 +515,13 @@ player_ones = ["stockfish_16layers_ckpt_no_optimizer.pt"]
 player_ones = ["gpt-3.5-turbo-instruct"]
 player_two_recording_name = "stockfish_sweep"
 if __name__ == "__main__":
-    for player in player_ones:
-        player_one_recording_name = player
-        for i in range(11):
-            num_games = 100
-            player_one = GPTPlayer(model=player)
-            # player_one = GPTPlayer(model="gpt-4")
-            # player_one = StockfishPlayer(skill_level=-1, play_time=0.1)
-            # player_one = NanoGptPlayer(model_name=player_one_recording_name)
-            player_two = StockfishPlayer(skill_level=i, play_time=0.1)
-            # player_two = GPTPlayer(model="gpt-4")
-            # player_two = GPTPlayer(model="gpt-3.5-turbo-instruct")
-
-            play_game(player_one, player_two, num_games)
+    player_one_recording_name = "openrouter_model"
+    player_two_recording_name = "stockfish_sweep"
+    
+    num_games = 15
+    # Prefix 'openrouter/' to indicate you're using an OpenRouter model
+    # Replace 'model_name' with an actual model available on OpenRouter like 'anthropic/claude-2' or 'meta-llama/llama-2-70b-chat'
+    player_one = GPTPlayer(model="openrouter/google/gemma-3-27b-it:free")
+    player_two = StockfishPlayer(skill_level=5, play_time=0.1)
+    
+    play_game(player_one, player_two, num_games)

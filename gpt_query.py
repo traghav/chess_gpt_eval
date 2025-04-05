@@ -49,13 +49,13 @@ def get_gpt_response(
     try:
         messages = []
         # system message is used in openai_request()
-        # system_message_dict = {
-        #     "role": "system",
-        #     "content": system_message,
-        # }
+        system_message_dict = {
+            "role": "system",
+            "content": system_message,
+        }
         initial_message = {"role": "user", "content": prompt}
         messages.append(initial_message)
-
+        messages = [system_message_dict] + messages
         record_messages(messages, model)
 
         # num_tokens = count_all_tokens(model, messages)
@@ -115,7 +115,7 @@ def openrouter_request(model: str, messages: list[dict], temperature: float) -> 
     OPENROUTER_REFERRER = "https://github.com/adamkarvonen/nanoGPT"
 
     model = model.replace("openrouter/", "")
-
+    #print(messages)
     completion = openai.ChatCompletion.create(
         model=model,
         headers={"HTTP-Referer": OPENROUTER_REFERRER},
